@@ -2,6 +2,8 @@
 Code frame of Mediapipe+LinearSVC
 - About Mediapipe
     Please visit https://chuoling.github.io/mediapipe/solutions/hands.html for more info
+- About LinearSVC
+    Please visit https://wiki.sipeed.com/maixpy/doc/zh/vision/hand_gesture_classification.html for more info
 """
 
 import cv2
