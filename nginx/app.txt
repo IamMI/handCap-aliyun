@@ -1,0 +1,43 @@
+server {
+    listen 80;
+    server_name 47.96.99.105;
+
+    root /var/www/html/myapp;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 单独处理 assets 目录下的静态资源，防止重定向
+    location /assets/ {
+        try_files $uri =404;
+        expires max;
+        add_header Cache-Control "public";
+    }
+
+    # 其他静态资源（图片、字体等）
+    location ~ \.(js|css|png|jpg|gif|ico|svg)$ {
+        try_files $uri =404;
+        expires 1d;
+        add_header Cache-Control "public";
+    }
+     location /history/ {
+        alias /var/mediamtx/recordings/history/;
+        try_files $uri =404;
+        expires max;
+        add_header Cache-Control "public";
+    }
+
+     location /alert/ {
+        proxy_pass http://localhost:3000/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
